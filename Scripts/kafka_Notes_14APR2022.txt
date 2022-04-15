@@ -1,0 +1,36 @@
+Get confluenet kafka from 
+https://www.confluent.io/get-started/?product=software
+
+Add following code to kafka-run-class.bat file for 
+windows 10
+
+=> search: Classpath addition for core
+=> above this line, add the below to fix zookeeper running issue 
+rem Classpath addition for LSB style path
+if exist %BASE_DIR%\share\java\kafka\* (
+call :concat %BASE_DIR%\share\java\kafka\*
+)
+
+set kafka home:
+setx KAFKA_HOME C:\Kafka\confluent-7.1.0
+Start zookeeper server
+%CONFLUENT_HOME%\bin\windows\zookeeper-server-start.bat %CONFLUENT_HOME%\etc\kafka\zookeeper.properties
+
+Start kafka Server
+%CONFLUENT_HOME%\bin\windows\kafka-server-start.bat %CONFLUENT_HOME%\etc\kafka\server-0.properties
+
+
+how to check kafka logs
+
+C:\Kafka\confluent-7.1.0>bin\windows\kafka-dump-log.bat --files C:\tmp\kafka-logs-0\stock-ticks-2\00000000000000000000.log
+=====================
+change zookeeper set
+To generate logs in the current directory 
+C:\Kafka\confluent-7.1.0\etc\kafka\zookeeper.properties
+dataDir=../tmp/zookeeper
+
+C:\Kafka\confluent-7.1.0\etc\kafka\server-0.properties
+log.dirs=../tmp/kafka-logs-0
+=========================
+
+to run .cmd files in intellij, install batch scripts support plugin
